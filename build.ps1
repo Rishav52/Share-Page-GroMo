@@ -35,7 +35,18 @@ $CSS = @'
 </style>
 '@
 
-$HIDE = "<script>if(new URLSearchParams(location.search).get('embed')==='1'){var _n=document.querySelector('.vswitch');if(_n)_n.style.display='none';document.documentElement.style.setProperty('--vsw','0px');}</script>"
+$HIDE = @'
+<script>
+if(new URLSearchParams(location.search).get('embed')==='1'){
+  var _n=document.querySelector('.vswitch');
+  if(_n)_n.style.display='none';
+  document.documentElement.style.setProperty('--vsw','0px');
+  var _s=document.createElement('style');
+  _s.textContent='html,body{scrollbar-width:none;-ms-overflow-style:none}html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}';
+  document.head.appendChild(_s);
+}
+</script>
+'@
 
 function New-Switcher([string]$active) {
   $cur = $VERSIONS | Where-Object { $_.n -eq $active }
