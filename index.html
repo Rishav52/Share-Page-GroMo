@@ -1,674 +1,101 @@
-<title>The Advisor Counter</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Share Page Versions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root{
-  --ink:#101A16;
-  --paper:#F4F6F2;
-  --surface:#FFFFFF;
-  --surface-2:#FAFBF9;
-  --accent:#0A7D46;
-  --accent-soft:#E4F0E8;
-  --accent-line:#B9D7C5;
-  --brass:#8A6212;
-  --brass-soft:#F5EEDC;
-  --muted:#5D6B62;
-  --faint:#8A968E;
-  --line:#DDE4DD;
-  --line-strong:#C6D0C7;
-  --shadow:0 1px 2px rgba(16,26,22,.05), 0 8px 24px -12px rgba(16,26,22,.18);
-  --cc:#1F4E6B; --sa:#2F6B4F; --da:#6B4A1F; --pl:#54306B; --iv:#1F5B6B; --cl:#6B3B2F;
-  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
-  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",monospace;
-  --r:10px;
-  --maxw:1180px;
+  --paper:#F4F6F2; --surface:#fff; --ink:#101A16; --muted:#5D6B62; --faint:#8A968E;
+  --line:#DDE4DD; --line-strong:#C6D0C7; --accent:#0A7D46; --accent-soft:#E4F0E8;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ink:#E9EEE9;
-    --paper:#0C120F;
-    --surface:#141C18;
-    --surface-2:#111814;
-    --accent:#46C083;
-    --accent-soft:#16281E;
-    --accent-line:#2C4C3A;
-    --brass:#D6A63F;
-    --brass-soft:#241D0F;
-    --muted:#9AA79E;
-    --faint:#78857C;
-    --line:#26302A;
-    --line-strong:#354238;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
-    --cc:#79B4D6; --sa:#7FC79F; --da:#D2A55E; --pl:#B58FD0; --iv:#6FBAD0; --cl:#D2947E;
+    --paper:#0C120F; --surface:#141C18; --ink:#E9EEE9; --muted:#9AA79E; --faint:#78857C;
+    --line:#26302A; --line-strong:#354238; --accent:#46C083; --accent-soft:#16281E;
   }
 }
 :root[data-theme="dark"]{
-  --ink:#E9EEE9;
-  --paper:#0C120F;
-  --surface:#141C18;
-  --surface-2:#111814;
-  --accent:#46C083;
-  --accent-soft:#16281E;
-  --accent-line:#2C4C3A;
-  --brass:#D6A63F;
-  --brass-soft:#241D0F;
-  --muted:#9AA79E;
-  --faint:#78857C;
-  --line:#26302A;
-  --line-strong:#354238;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
-  --cc:#79B4D6; --sa:#7FC79F; --da:#D2A55E; --pl:#B58FD0; --iv:#6FBAD0; --cl:#D2947E;
+  --paper:#0C120F; --surface:#141C18; --ink:#E9EEE9; --muted:#9AA79E; --faint:#78857C;
+  --line:#26302A; --line-strong:#354238; --accent:#46C083; --accent-soft:#16281E;
 }
-
 *{box-sizing:border-box}
 body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--body);
-  font-size:15px;
-  line-height:1.55;
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:Figtree,system-ui,sans-serif;font-size:15px;line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
-h1,h2,h3{font-family:var(--display);font-weight:800;text-wrap:balance;margin:0;letter-spacing:-.02em}
-a{color:inherit}
-:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:4px}
-
-/* ---------- top bar ---------- */
-.topbar{
-  position:sticky;top:0;z-index:60;
-  background:color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
-}
-.topbar .wrap{display:flex;align-items:center;gap:14px;height:56px}
-.mark{display:flex;align-items:center;gap:9px;font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.03em}
-.leaf{width:24px;height:24px;flex:none}
-.mark small{font-family:var(--body);font-weight:500;font-size:12px;color:var(--muted);letter-spacing:0;padding-left:9px;border-left:1px solid var(--line-strong)}
-.topbar-cta{margin-left:auto;display:flex;gap:8px}
-.btn{
-  font:inherit;font-weight:600;font-size:13.5px;
-  border-radius:8px;border:1px solid transparent;
-  padding:9px 15px;cursor:pointer;text-decoration:none;
-  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
-  transition:transform .12s ease, background .12s ease, border-color .12s ease;
-}
-.btn:active{transform:translateY(1px)}
-.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-:root[data-theme="dark"] .btn-primary{color:#07130D}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-primary{color:#07130D}}
-.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-.btn svg{width:15px;height:15px;flex:none}
-
-/* ---------- preview notice ---------- */
-.notice{
-  background:var(--brass-soft);
-  border-bottom:1px solid var(--line);
-  font-size:12.5px;color:var(--brass);
-}
-.notice .wrap{display:flex;gap:9px;align-items:baseline;padding-top:9px;padding-bottom:9px}
-.notice b{font-weight:600;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.09em}
-
-/* ---------- hero ---------- */
-.hero{padding:44px 0 34px;border-bottom:1px solid var(--line)}
-.hero-grid{display:grid;gap:30px;grid-template-columns:1fr}
-@media(min-width:900px){.hero-grid{grid-template-columns:1.35fr .85fr;gap:52px;align-items:start}}
+.wrap{max-width:820px;margin:0 auto;padding:48px 20px 70px}
 .eyebrow{
-  font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:16px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
 }
-.eyebrow::after{content:"";flex:1;height:1px;background:var(--accent-line);max-width:90px}
-h1{font-size:clamp(34px,7vw,54px);line-height:1.04}
-.hero p.lede{font-size:clamp(15.5px,2vw,17.5px);color:var(--muted);max-width:52ch;margin:16px 0 0}
-.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
-.btn-lg{padding:12px 20px;font-size:15px}
-
-.credential{
-  margin-top:26px;display:inline-flex;align-items:center;gap:11px;
-  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--brass);
-  border-radius:0 var(--r) var(--r) 0;padding:11px 15px;text-decoration:none;box-shadow:var(--shadow);
-  transition:border-color .15s ease;
+h1{font-size:clamp(28px,5.5vw,40px);line-height:1.08;margin:0;letter-spacing:-.025em;text-wrap:balance}
+.lede{color:var(--muted);margin:14px 0 0;max-width:56ch;font-size:16px}
+.list{display:grid;gap:12px;margin-top:36px}
+.row{
+  display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+  background:var(--surface);border:1px solid var(--line);border-radius:11px;
+  padding:18px;text-decoration:none;color:inherit;
+  transition:border-color .15s ease,transform .12s ease;
 }
-.credential:hover{border-color:var(--brass)}
-.credential .seal{width:30px;height:30px;flex:none;border-radius:50%;background:var(--brass-soft);color:var(--brass);display:grid;place-items:center}
-.credential .seal svg{width:16px;height:16px}
-.credential-t{font-weight:600;font-size:13.5px;line-height:1.3}
-.credential-s{font-size:11.5px;color:var(--muted);font-family:var(--mono)}
-
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
-.stat{padding:16px 14px;border-right:1px solid var(--line)}
-.stat:last-child{border-right:0}
-.stat b{display:block;font-family:var(--display);font-size:26px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
-.stat span{display:block;font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.3}
-
-/* free tools */
-.tools{display:grid;gap:10px;margin-top:16px}
-.tool{
-  display:flex;align-items:center;gap:12px;text-decoration:none;
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-  padding:13px 15px;transition:border-color .15s ease,transform .12s ease;
+.row:hover{border-color:var(--accent);transform:translateY(-2px)}
+.row:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px}
+.v{
+  font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;
+  background:var(--accent-soft);color:var(--accent);
+  border-radius:7px;padding:9px 11px;line-height:1;
 }
-.tool:hover{border-color:var(--accent);transform:translateX(2px)}
-.tool-ico{width:34px;height:34px;flex:none;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
-.tool-ico svg{width:18px;height:18px}
-.tool > span:nth-child(2){display:block;min-width:0}
-.tool-t{display:block;font-weight:600;font-size:14px;line-height:1.25}
-.tool-s{display:block;font-size:12px;color:var(--muted);margin-top:2px}
-.tool-arrow{margin-left:auto;color:var(--faint);font-size:17px}
-.free-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--accent);border:1px solid var(--accent-line);border-radius:3px;padding:1px 4px;vertical-align:2px;margin-left:6px}
-
-/* ---------- catalogue ---------- */
-.cat{padding:38px 0 10px}
-.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
-h2{font-size:clamp(23px,3.6vw,31px)}
-.sec-sub{color:var(--muted);font-size:14.5px;margin:8px 0 0;max-width:60ch}
-
-.filters{
-  position:sticky;top:56px;z-index:50;
-  background:var(--paper);
-  padding:18px 0 14px;margin-top:22px;
-  border-bottom:1px solid var(--line);
+.t{font-weight:600;font-size:16px;line-height:1.25}
+.d{color:var(--muted);font-size:13.5px;margin-top:3px}
+.go{color:var(--faint);font-size:19px}
+.row:hover .go{color:var(--accent)}
+.next{
+  margin-top:14px;border:1px dashed var(--line-strong);border-radius:11px;
+  padding:18px;color:var(--muted);font-size:13.5px;
 }
-.search{position:relative;display:block}
-.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--faint);pointer-events:none}
-.search input{
-  width:100%;font:inherit;font-size:15px;color:var(--ink);
-  background:var(--surface);border:1px solid var(--line-strong);border-radius:9px;
-  padding:11px 14px 11px 40px;
-}
-.search input::placeholder{color:var(--faint)}
-.search input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
-.chips{display:flex;gap:7px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{
-  font:inherit;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;
-  background:var(--surface);color:var(--muted);
-  border:1px solid var(--line-strong);border-radius:99px;padding:6px 14px;
-  transition:.13s ease;
-}
-.chip:hover{color:var(--ink);border-color:var(--line-strong)}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.chip .n{font-family:var(--mono);font-size:11px;opacity:.65;margin-left:5px}
-.count{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:12px;letter-spacing:.03em}
-
-.group{margin-top:32px}
-.group-head{display:flex;align-items:center;gap:11px;margin-bottom:14px}
-.group-dot{width:9px;height:9px;border-radius:2px;flex:none}
-h3{font-size:16.5px;font-weight:600;font-family:var(--body);letter-spacing:-.01em}
-.group-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-left:auto}
-
-.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(232px,1fr))}
-.card{
-  display:flex;flex-direction:column;gap:11px;text-align:left;
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-  padding:14px;cursor:pointer;font:inherit;color:inherit;
-  transition:border-color .14s ease, box-shadow .14s ease, transform .14s ease;
-}
-.card:hover{border-color:var(--line-strong);box-shadow:var(--shadow);transform:translateY(-2px)}
-.card-top{display:flex;gap:11px;align-items:flex-start}
-.logo{
-  width:40px;height:40px;flex:none;border-radius:8px;
-  display:grid;place-items:center;
-  font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:-.04em;
-  color:#fff;
-}
-:root[data-theme="dark"] .logo{color:#0C120F}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo{color:#0C120F}}
-.card-top > span:last-child{display:block;min-width:0}
-.card-name{display:block;font-weight:600;font-size:14.5px;line-height:1.25}
-.card-prod{display:block;font-size:12.5px;color:var(--muted);line-height:1.3;margin-top:2px}
-.card-foot{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:10px;border-top:1px dashed var(--line)}
-.code{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.02em}
-.apply{
-  margin-left:auto;font-size:12.5px;font-weight:600;color:var(--accent);
-  display:inline-flex;align-items:center;gap:4px;
-}
-.card:hover .apply{gap:7px}
-.empty{
-  border:1px dashed var(--line-strong);border-radius:var(--r);
-  padding:38px 20px;text-align:center;color:var(--muted);margin-top:26px;
-}
-.empty b{display:block;font-family:var(--display);font-size:18px;color:var(--ink);margin-bottom:5px}
-
-/* ---------- steps ---------- */
-.steps-sec{padding:46px 0;border-top:1px solid var(--line);margin-top:44px}
-.steps{display:grid;gap:2px;margin-top:24px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--line)}
-@media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{background:var(--surface);padding:22px 20px}
-.step-n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em;margin-bottom:11px}
-.step h3{font-family:var(--display);font-weight:800;font-size:17.5px;letter-spacing:-.02em;margin-bottom:7px}
-.step p{margin:0;font-size:13.5px;color:var(--muted)}
-
-/* ---------- form ---------- */
-.advice{padding:44px 0;border-top:1px solid var(--line)}
-.advice-inner{
-  background:var(--ink);color:var(--paper);
-  border-radius:14px;padding:clamp(24px,4vw,40px);
-  display:grid;gap:28px;
-}
-:root[data-theme="dark"] .advice-inner{background:var(--surface);border:1px solid var(--line-strong)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .advice-inner{background:var(--surface);border:1px solid var(--line-strong)}}
-@media(min-width:840px){.advice-inner{grid-template-columns:1fr 1fr;gap:44px;align-items:center}}
-.advice-inner h2{color:inherit}
-.advice-inner p{color:color-mix(in srgb,currentColor 66%,transparent);font-size:14.5px;margin:12px 0 0;max-width:44ch}
-form{display:grid;gap:11px}
-label{font-size:12px;font-family:var(--mono);letter-spacing:.09em;text-transform:uppercase;opacity:.6}
-input[type=text],input[type=tel],select{
-  font:inherit;font-size:15px;width:100%;
-  padding:12px 13px;border-radius:9px;
-  border:1px solid color-mix(in srgb,currentColor 22%,transparent);
-  background:color-mix(in srgb,currentColor 7%,transparent);
-  color:inherit;
-}
-select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 19px) 51%,calc(100% - 14px) 51%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-select option{color:#101A16;background:#fff}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
-.form-row{display:grid;gap:11px}
-@media(min-width:520px){.form-row{grid-template-columns:1fr 1fr}}
-.submit{margin-top:5px;justify-content:center;padding:13px}
-.form-note{font-size:11.5px;opacity:.5;margin:0}
-.sent{
-  display:none;background:var(--accent-soft);color:var(--accent);
-  border:1px solid var(--accent-line);border-radius:9px;padding:12px 14px;font-size:13.5px;font-weight:500;
-}
-
-/* ---------- trust ---------- */
-.trust{padding:44px 0;border-top:1px solid var(--line)}
-.trust-grid{display:grid;gap:18px;margin-top:22px}
-@media(min-width:760px){.trust-grid{grid-template-columns:repeat(3,1fr);gap:30px}}
-.trust-item h3{font-family:var(--display);font-weight:800;font-size:16.5px;margin-bottom:7px;letter-spacing:-.02em}
-.trust-item p{margin:0;font-size:13.5px;color:var(--muted)}
-.trust-rule{width:26px;height:2px;background:var(--accent);margin-bottom:13px}
-
-/* ---------- footer ---------- */
-footer{border-top:1px solid var(--line);padding:26px 0 90px;background:var(--surface-2)}
-.foot{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;font-size:12.5px;color:var(--muted)}
-.foot a{text-decoration:none}
-.foot a:hover{color:var(--accent)}
-.foot .sep{margin-left:auto}
-
-/* ---------- floating contact ---------- */
-.float{
-  position:fixed;right:16px;bottom:16px;z-index:70;
-  display:flex;flex-direction:column;gap:10px;
-}
-.fab{
-  width:50px;height:50px;border-radius:50%;display:grid;place-items:center;
-  color:#fff;text-decoration:none;box-shadow:0 4px 16px rgba(16,26,22,.28);
-  transition:transform .14s ease;
-}
-.fab:hover{transform:scale(1.06)}
-.fab svg{width:23px;height:23px}
-.fab-wa{background:#1FA855}
-.fab-call{background:var(--accent)}
-@media(min-width:900px){.float{flex-direction:row}}
-
-@media (prefers-reduced-motion:reduce){
-  *{transition:none!important;animation:none!important}
-}
+.next b{color:var(--ink);font-weight:600;display:block;margin-bottom:3px;font-size:14.5px}
+footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+footer code{font-family:"IBM Plex Mono",monospace;font-size:11.5px}
 </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">GroMo partner share page</div>
+  <h1>Design versions</h1>
+  <p class="lede">Each version is a full working page. Open them side by side to compare, then tell me which direction to take further.</p>
 
-<div class="topbar">
-  <div class="wrap">
-    <span class="mark">
-      <svg class="leaf" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 21.5c-4.4 0-7.5-3.2-7.5-7.6C4.5 8 9.4 3.4 18.8 2.5c.8 5.6-.4 10-3.2 12.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 21.5V12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      GroMo <small>Certified Partner</small>
-    </span>
-    <div class="topbar-cta">
-      <a class="btn btn-ghost" href="tel:">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 2.5h3l1.5 4.2-2.1 1.5a12.5 12.5 0 0 0 6.8 6.8l1.5-2.1 4.2 1.5v3a2 2 0 0 1-2.2 2A17.8 17.8 0 0 1 4.6 4.7a2 2 0 0 1 2-2.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-        Call
-      </a>
-      <a class="btn btn-primary" href="#advice">Get advice</a>
-    </div>
+  <div class="list">
+    <a class="row" href="v1/">
+      <span class="v">V1</span>
+      <span>
+        <span class="t">Original design</span>
+        <span class="d">Faithful rebuild of the live page. Blue hero, certificate, logo carousels.</span>
+      </span>
+      <span class="go">&rarr;</span>
+    </a>
+
+    <a class="row" href="v2/">
+      <span class="v">V2</span>
+      <span>
+        <span class="t">Searchable catalogue</span>
+        <span class="d">Every product named and searchable. Category filters, live count, no carousels.</span>
+      </span>
+      <span class="go">&rarr;</span>
+    </a>
   </div>
+
+  <div class="next">
+    <b>More versions to come</b>
+    Tell me what the next version should try and it appears here as V3.
+  </div>
+
+  <footer>
+    Partner page <code>BwHW9iOa7ivhkeJoSCPLS</code> &middot; 82 products across 6 categories
+  </footer>
 </div>
-
-<div class="notice">
-  <div class="wrap">
-    <b>Design preview</b>
-    <span>Interface redesign of the GroMo Partner storefront. Product names are mapped from the live catalogue codes; fees, eligibility and apply links come from the product feed.</span>
-  </div>
-</div>
-
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow">Certified financial advisor</div>
-      <h1>Rishav Raj Verma</h1>
-      <p class="lede">I help people get the right credit card, loan, savings or demat account, and I stay with the application until it is approved and in your hands.</p>
-
-      <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="#catalogue">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          Browse 82 products
-        </a>
-        <a class="btn btn-ghost btn-lg" href="#advice">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.4A8.4 8.4 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-          Ask me a question
-        </a>
-      </div>
-
-      <a class="credential" href="#">
-        <span class="seal">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.8 14.4 6l4 .5-2.5 3.1 1 3.9L12 12l-4.9 1.5 1-3.9L5.6 6.5l4-.5L12 2.8Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 14v7l3-1.8L15 21v-7" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-        </span>
-        <span>
-          <span class="credential-t">Financial Advisor Certificate</span><br>
-          <span class="credential-s">Issued by GroMo &middot; View certificate</span>
-        </span>
-      </a>
-    </div>
-
-    <div>
-      <div class="stats">
-        <div class="stat"><b>82</b><span>Products I can place</span></div>
-        <div class="stat"><b>6</b><span>Product categories</span></div>
-        <div class="stat"><b>40+</b><span>Banks &amp; lenders</span></div>
-      </div>
-
-      <div class="tools">
-        <a class="tool" href="#">
-          <span class="tool-ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 15a8.5 8.5 0 0 1 17 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M12 15l4-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>
-          <span>
-            <span class="tool-t">Check your credit score<span class="free-tag">FREE</span></span>
-            <span class="tool-s">Takes a minute, no effect on your score</span>
-          </span>
-          <span class="tool-arrow">&rsaquo;</span>
-        </a>
-        <a class="tool" href="#">
-          <span class="tool-ico"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13.5h18M5.5 13.5 7 7.2A2 2 0 0 1 9 5.6h6a2 2 0 0 1 2 1.6l1.5 6.3v4.3h-15v-4.3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7.6" cy="16.5" r="1" fill="currentColor"/><circle cx="16.4" cy="16.5" r="1" fill="currentColor"/></svg></span>
-          <span>
-            <span class="tool-t">Check your vehicle challan<span class="free-tag">FREE</span></span>
-            <span class="tool-s">Pending fines across all states</span>
-          </span>
-          <span class="tool-arrow">&rsaquo;</span>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="cat" id="catalogue">
-  <div class="wrap">
-    <div class="sec-head"><h2>Apply for a financial product</h2></div>
-    <p class="sec-sub">Every product I am authorised to place, with the brand and the product named. Search by bank, or filter by what you are looking for.</p>
-
-    <div class="filters">
-      <label class="search">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.6" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input id="q" type="text" placeholder="Search HDFC, personal loan, demat…" autocomplete="off" aria-label="Search products">
-      </label>
-      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
-      <div class="count" id="count"></div>
-    </div>
-
-    <div id="results"></div>
-  </div>
-</section>
-
-<section class="steps-sec">
-  <div class="wrap">
-    <h2>How applying through me works</h2>
-    <p class="sec-sub">Three steps. You never fill the same detail twice, and you always know where the application stands.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">STEP 01</div>
-        <h3>Pick a product</h3>
-        <p>Tell me what you need, or pick from the list above. I will tell you honestly whether you are likely to qualify before you apply.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">STEP 02</div>
-        <h3>Apply in one sitting</h3>
-        <p>You apply on the bank's own secure page. I stay on the call and sort out anything the form asks for that is unclear.</p>
-      </div>
-      <div class="step">
-        <div class="step-n">STEP 03</div>
-        <h3>I track it to delivery</h3>
-        <p>I follow up with the bank on your behalf and keep you posted until the card, loan or account actually reaches you.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="advice" id="advice">
-  <div class="wrap">
-    <div class="advice-inner">
-      <div>
-        <h2>Need free insurance advice?</h2>
-        <p>Health, motor or life cover. Tell me what you are trying to protect and I will explain the options in plain language, with no obligation to buy.</p>
-      </div>
-      <form id="adviceForm" novalidate>
-        <div class="form-row">
-          <div>
-            <label for="fname">Your name</label>
-            <input id="fname" type="text" placeholder="Full name" autocomplete="name" required>
-          </div>
-          <div>
-            <label for="fphone">Mobile</label>
-            <input id="fphone" type="tel" placeholder="10-digit number" autocomplete="tel" required>
-          </div>
-        </div>
-        <div>
-          <label for="fprod">What do you want cover for?</label>
-          <select id="fprod" required>
-            <option value="">Select a product</option>
-            <option>Health Insurance</option>
-            <option>Car Insurance</option>
-            <option>Life Insurance</option>
-            <option>Commercial Vehicle Insurance</option>
-          </select>
-        </div>
-        <button class="btn btn-primary submit" type="submit">Request a callback</button>
-        <p class="form-note">I will call you back myself. Your number is not shared with anyone else.</p>
-        <div class="sent" id="sent" role="status">Thanks. I will call you back shortly on the number you gave.</div>
-      </form>
-    </div>
-  </div>
-</section>
-
-<section class="trust">
-  <div class="wrap">
-    <h2>Why go through a certified partner</h2>
-    <div class="trust-grid">
-      <div class="trust-item">
-        <div class="trust-rule"></div>
-        <h3>You get told the real answer</h3>
-        <p>A partner who knows the bank's criteria will tell you when an application is likely to be rejected, instead of letting you take the hit on your credit report.</p>
-      </div>
-      <div class="trust-item">
-        <div class="trust-rule"></div>
-        <h3>One person owns the follow-up</h3>
-        <p>No call centre queue. The same person who took your application chases the bank and answers when you ask where it has reached.</p>
-      </div>
-      <div class="trust-item">
-        <div class="trust-rule"></div>
-        <h3>Backed by GroMo</h3>
-        <p>GroMo was founded by IIT Delhi alumni and certifies every partner on its platform. You apply on the bank's own page; nothing is collected off-platform.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap foot">
-    <span id="copy"></span>
-    <a href="#">Terms of service</a>
-    <a href="#">Privacy policy</a>
-    <span class="sep"></span>
-    <span class="code">Partner page &middot; BwHW9iOa7ivhkeJoSCPLS</span>
-  </div>
-</footer>
-
-<div class="float">
-  <a class="fab fab-call" href="tel:" aria-label="Call this advisor">
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 2.5h3l1.5 4.2-2.1 1.5a12.5 12.5 0 0 0 6.8 6.8l1.5-2.1 4.2 1.5v3a2 2 0 0 1-2.2 2A17.8 17.8 0 0 1 4.6 4.7a2 2 0 0 1 2-2.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-  </a>
-  <a class="fab fab-wa" href="#" aria-label="Message this advisor on WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2a9.7 9.7 0 0 0-8.3 14.7L2.2 21.8l5.1-1.4A9.7 9.7 0 1 0 12 2.2Zm5.5 13.6c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1a13 13 0 0 1-5.5-4.6c-.4-.6-.9-1.5-.9-2.4 0-.9.5-1.4.7-1.6.2-.2.4-.3.6-.3h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2 0 .4-.1.5l-.4.5c-.1.1-.2.3-.1.5.3.6 1 1.5 1.6 2 .6.5 1 .7 1.3.8.2.1.4 0 .5-.1l.6-.7c.2-.2.3-.2.5-.1l1.6.8c.2.1.4.2.4.3.1.2.1.6-.1 1.2Z"/></svg>
-  </a>
-</div>
-
-<script>
-const CATS = [
-  {id:"cc", label:"Credit Card",     v:"--cc", items:[
-    ["AXIS_CC","Axis Bank","Credit Card"],["ROAR_CARD","Roar","Secured Credit Card"],
-    ["INDUSIND_CC","IndusInd Bank","Credit Card"],["AXIS_CK","Axis Bank","Credit Card (CK)"],
-    ["UNI_BOB","Uni","Bank of Baroda Card"],["AUSFB_CC","AU Small Finance Bank","Credit Card"],
-    ["SBI_CASHBACK","SBI Card","Cashback Card"],["SCAPE","Scapia","Travel Credit Card"],
-    ["SBI_CLIC","SBI Card","SimplyCLICK"],["HDFC_PIXEL","HDFC Bank","Pixel Card"],
-    ["IDFC_CC","IDFC FIRST Bank","Credit Card"],["KOTAK_CARD","Kotak Mahindra Bank","Credit Card"],
-    ["POP_CC","POP","Club Card"],["IDFC_HPCL","IDFC FIRST Bank","HPCL Power Card"],
-    ["TATA_NEU","Tata Neu","HDFC Bank Card"],["KIWI_CC","Kiwi","Credit Card"],
-    ["SALARY_SE","SalarySe","Credit Card"],["SBI_CC","SBI Card","Credit Card"],
-    ["HDFC_P","HDFC Bank","Credit Card"],["EDGE_CSB","Jupiter Edge","CSB Bank Card"],
-    ["RBL_IO","RBL Bank","IndianOil Card"],["TATA_HDFC","Tata Neu Infinity","HDFC Bank Card"],
-    ["MYZONE_AXIS","Axis Bank","MyZone Card"],["LIC_AXIS","LIC","Axis Bank Card"],
-    ["ZAGG_CC","Zaggle","Credit Card"],["RBL_CC","RBL Bank","Credit Card"],
-    ["IND_TIGR","IndusInd Bank","Tiger Card"],["AXIS_IO","Axis Bank","IndianOil Card"],
-    ["KIWI","Kiwi","UPI Credit Card"],["YES_CC","YES Bank","Credit Card"]
-  ]},
-  {id:"pl", label:"Personal Loan",   v:"--pl", items:[
-    ["POONAWALLA_FINCORP","Poonawalla Fincorp","Personal Loan"],["INCRED","InCred","Personal Loan"],
-    ["MONEYVIEW","Moneyview","Personal Loan"],["FPPL","Fibe","Personal Loan"],
-    ["ZYPE","Zype","Personal Loan"],["TEZ","Tez","Personal Loan"],
-    ["RAM_PL","Ram Fincorp","Personal Loan"],["PREFR","Prefr","Personal Loan"],
-    ["BRIGHT","Bright Money","Personal Loan"],["HERO_PL","Hero FinCorp","Personal Loan"],
-    ["MYFLOT","MyFlot","Personal Loan"],["LPL","LoanTap","Personal Loan"],
-    ["PAISA_PL","Paisabazaar","Personal Loan"],["UNITY_PL","Unity Small Finance Bank","Personal Loan"],
-    ["KREDITBEE","KreditBee","Personal Loan"],["ZAP_PL","Zapcash","Personal Loan"],
-    ["KISSHT","Kissht","Personal Loan"],["RING","Ring","Personal Loan"],
-    ["RUPEZI","Rupeezi","Personal Loan"],["ASAP_FPL","ASAP","Personal Loan"],
-    ["PAYME_PL","PayMe India","Personal Loan"],["HDFC_IL","HDFC Bank","Insta Loan"],
-    ["DIGI_CREDIT","DigiCredit","Personal Loan"],["BHARATPL","Bharat Loan","Personal Loan"],
-    ["IDFC_PL","IDFC FIRST Bank","Personal Loan"],["MMBPL","MoneyMart","Personal Loan"],
-    ["ClickPE","ClickPE","Personal Loan"],["POONAWALLA_BL","Poonawalla Fincorp","Business Loan"]
-  ]},
-  {id:"iv", label:"Investment",      v:"--iv", items:[
-    ["BHA_FD","Bharat","Fixed Deposit"],["JIRAAF","Jiraaf","Bond Investment"],
-    ["BHA_DG","Bharat","Digital Gold"],["ICICI_PRU","ICICI Prudential","Investment Plan"],
-    ["SBM_IC","SBM Bank","Investment Account"],["BHA_MF","Bharat","Mutual Fund"],
-    ["AXIS_MICRO","Axis","Micro SIP"],["AXIS_MUTUAL","Axis","Mutual Fund"],
-    ["AW_MUTUAL","AW","Mutual Fund"]
-  ]},
-  {id:"cl", label:"Credit Line",     v:"--cl", items:[
-    ["VOLT_MONEY","Volt Money","Loan Against Mutual Funds"],["FATAKPAY","FatakPay","Credit Line"],
-    ["HDFC_SE","HDFC Bank","SmartEMI"],["PAAPA","Paapa","Credit Line"],
-    ["BPCL_UPI","BPCL","UPI Credit Line"],["APO_CASH","ApolloCash","Credit Line"]
-  ]},
-  {id:"da", label:"Demat Account",   v:"--da", items:[
-    ["CHOICE_CONNECT","Choice","Connect Demat"],["STOCKO","Stocko","Demat Account"],
-    ["FIVE_PAISA","5paisa","Demat Account"],["UPSTOX","Upstox","Demat Account"],
-    ["LEMONN_DA","Lemonn","Demat Account"]
-  ]},
-  {id:"sa", label:"Saving Account",  v:"--sa", items:[
-    ["IDFC_SAVINGS","IDFC FIRST Bank","Savings Account"],["EQUITAS","Equitas SFB","Savings Account"],
-    ["KSAVINGS","Kotak","Savings Account"],["KOTAK_SA","Kotak Mahindra Bank","Savings Account"]
-  ]}
-];
-
-const STOP = new Set(["bank","the","of","and","small","finance"]);
-function initials(brand){
-  const w = brand.replace(/[^A-Za-z0-9 ]/g," ").split(/\s+/).filter(x=>x && !STOP.has(x.toLowerCase()));
-  if(!w.length) return brand.slice(0,2).toUpperCase();
-  if(w.length===1) return w[0].slice(0,2).toUpperCase();
-  return (w[0][0]+w[1][0]).toUpperCase();
-}
-
-const TOTAL = CATS.reduce((n,c)=>n+c.items.length,0);
-const chipsEl = document.getElementById("chips");
-const resEl   = document.getElementById("results");
-const qEl     = document.getElementById("q");
-const countEl = document.getElementById("count");
-let active = "all";
-
-const chipDefs = [{id:"all", label:"All products", n:TOTAL}].concat(
-  CATS.map(c=>({id:c.id, label:c.label, n:c.items.length}))
-);
-chipDefs.forEach(d=>{
-  const b=document.createElement("button");
-  b.className="chip"; b.type="button"; b.dataset.id=d.id;
-  b.setAttribute("aria-pressed", d.id==="all" ? "true":"false");
-  b.innerHTML = d.label + '<span class="n">'+d.n+'</span>';
-  b.addEventListener("click",()=>{ active=d.id; syncChips(); render(); });
-  chipsEl.appendChild(b);
-});
-function syncChips(){
-  [...chipsEl.children].forEach(b=>b.setAttribute("aria-pressed", b.dataset.id===active ? "true":"false"));
-}
-
-function render(){
-  const q = qEl.value.trim().toLowerCase();
-  let shown = 0;
-  const frag = document.createDocumentFragment();
-
-  CATS.forEach(cat=>{
-    if(active!=="all" && active!==cat.id) return;
-    const items = cat.items.filter(([code,brand,prod])=>{
-      if(!q) return true;
-      return (brand+" "+prod+" "+code+" "+cat.label).toLowerCase().includes(q);
-    });
-    if(!items.length) return;
-    shown += items.length;
-
-    const g=document.createElement("div"); g.className="group";
-    const h=document.createElement("div"); h.className="group-head";
-    h.innerHTML='<span class="group-dot" style="background:var('+cat.v+')"></span>'
-      +'<h3>'+cat.label+'</h3><span class="group-n">'+items.length+'</span>';
-    g.appendChild(h);
-
-    const grid=document.createElement("div"); grid.className="grid";
-    items.forEach(([code,brand,prod])=>{
-      const c=document.createElement("button");
-      c.className="card"; c.type="button";
-      c.innerHTML =
-        '<span class="card-top">'
-        + '<span class="logo" style="background:var('+cat.v+')" aria-hidden="true">'+initials(brand)+'</span>'
-        + '<span><span class="card-name">'+brand+'</span>'
-        + '<span class="card-prod">'+prod+'</span></span>'
-        + '</span>'
-        + '<span class="card-foot"><span class="code">'+code+'</span>'
-        + '<span class="apply">Apply &rarr;</span></span>';
-      grid.appendChild(c);
-    });
-    g.appendChild(grid);
-    frag.appendChild(g);
-  });
-
-  resEl.replaceChildren(frag);
-  if(!shown){
-    const e=document.createElement("div"); e.className="empty";
-    e.innerHTML='<b>Nothing matches &ldquo;'+qEl.value.trim().replace(/[<>&]/g,"")+'&rdquo;</b>'
-      +'Try a bank name like HDFC, or clear the search and pick a category.';
-    resEl.replaceChildren(e);
-  }
-  countEl.textContent = shown === TOTAL
-    ? "Showing all " + TOTAL + " products"
-    : "Showing " + shown + " of " + TOTAL + " products";
-}
-
-qEl.addEventListener("input", render);
-render();
-
-document.getElementById("adviceForm").addEventListener("submit", e=>{
-  e.preventDefault();
-  const f=e.target;
-  if(!f.querySelector("#fname").value.trim() || !f.querySelector("#fprod").value){
-    f.querySelector(!f.querySelector("#fname").value.trim() ? "#fname" : "#fprod").focus();
-    return;
-  }
-  document.getElementById("sent").style.display="block";
-  f.querySelector(".submit").textContent="Callback requested";
-});
-
-document.getElementById("copy").textContent = "© " + new Date().getFullYear() + " GroMo";
-</script>
+</body>
+</html>
