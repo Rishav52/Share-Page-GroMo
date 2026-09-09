@@ -343,7 +343,9 @@ footer{border-top:1px solid var(--line);padding:26px 0 90px;background:var(--sur
   .hero{padding:28px 0 24px}
   .hero-grid{gap:22px}
   .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
-  .hero-actions .btn{justify-content:center;padding:11px 8px;font-size:13.5px}
+  .hero-grid > *{min-width:0}
+  .hero-actions{min-width:0}
+  .hero-actions .btn{justify-content:center;padding:11px 6px;font-size:13px;min-width:0;white-space:normal;text-align:center;line-height:1.2}
   .credential{margin-top:18px}
   .tools{grid-template-columns:1fr 1fr;margin-top:12px}
   .tool{flex-direction:column;align-items:flex-start;gap:8px;padding:12px}
@@ -734,6 +736,7 @@ document.getElementById("copy").textContent = "© " + new Date().getFullYear() +
 
 </body>
 </html>
+
 
 
 
