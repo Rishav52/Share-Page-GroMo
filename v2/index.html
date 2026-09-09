@@ -314,6 +314,14 @@ footer{border-top:1px solid var(--line);padding:26px 0 90px;background:var(--sur
 .fab-call{background:var(--accent)}
 @media(min-width:900px){.float{flex-direction:row}}
 
+@media(max-width:460px){
+  .mark small{display:none}
+  .mark{font-size:15px}
+  .topbar .wrap{gap:8px;padding:0 14px}
+  .topbar-cta{gap:6px}
+  .btn{padding:8px 11px;font-size:12.5px}
+  .notice .wrap{padding-left:14px;padding-right:14px}
+}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important}
 }
@@ -702,6 +710,7 @@ document.getElementById("copy").textContent = "© " + new Date().getFullYear() +
 
 </body>
 </html>
+
 
 
 
