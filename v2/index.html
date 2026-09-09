@@ -207,8 +207,18 @@ h2{font-size:clamp(23px,3.6vw,31px)}
 .group-dot{width:9px;height:9px;border-radius:2px;flex:none}
 h3{font-size:16.5px;font-weight:600;font-family:var(--body);letter-spacing:-.01em}
 .group-n{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-left:auto}
+.group-head .seeall{margin-left:10px}
 
 .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(232px,1fr))}
+.rail{display:flex;gap:10px;overflow-x:auto;padding:1px 1px 8px;scrollbar-width:none;-ms-overflow-style:none}
+.rail::-webkit-scrollbar{display:none}
+.rail .card{flex:0 0 170px;width:170px}
+.seeall{
+  margin-left:10px;font:inherit;font-size:12.5px;font-weight:600;color:var(--accent);
+  background:none;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:4px;
+}
+.seeall:hover{text-decoration:underline}
+.seeall:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 .card{
   display:flex;flex-direction:column;gap:11px;text-align:left;
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
@@ -664,13 +674,23 @@ function render(){
     if(!items.length) return;
     shown += items.length;
 
+    const railMode = (!q && active === "all");
+
     const g=document.createElement("div"); g.className="group";
     const h=document.createElement("div"); h.className="group-head";
     h.innerHTML='<span class="group-dot" style="background:var('+cat.v+')"></span>'
       +'<h3>'+cat.label+'</h3><span class="group-n">'+items.length+'</span>';
+    if(railMode && items.length > 3){
+      const sa=document.createElement("button");
+      sa.className="seeall"; sa.type="button";
+      sa.textContent="See all "+items.length+" \u2192";
+      sa.addEventListener("click",()=>{ active=cat.id; syncChips(); render();
+        document.getElementById("catalogue").scrollIntoView({block:"start"}); });
+      h.appendChild(sa);
+    }
     g.appendChild(h);
 
-    const grid=document.createElement("div"); grid.className="grid";
+    const grid=document.createElement("div"); grid.className = railMode ? "rail" : "grid";
     items.forEach(([code,brand,prod])=>{
       const c=document.createElement("button");
       c.className="card"; c.type="button";
@@ -719,6 +739,7 @@ document.getElementById("copy").textContent = "© " + new Date().getFullYear() +
 
 </body>
 </html>
+
 
 
 
