@@ -318,16 +318,19 @@ footer{border-top:1px solid var(--line);padding:26px 0 90px;background:var(--sur
   *{transition:none!important;animation:none!important}
 }
 </style>
+<style>
+.vswitch{display:flex;gap:7px;align-items:center;justify-content:center;padding:7px 10px;background:#0d100e;font-family:system-ui,sans-serif}
+.vswitch a{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#93a197;background:#191d1b;border:1px solid #2b322e;text-decoration:none;transition:.14s ease}
+.vswitch a:hover{color:#fff;border-color:#46C083}
+.vswitch a.on{background:#0A7D46;color:#fff;border-color:#0A7D46}
+.vswitch a:focus-visible{outline:2px solid #46C083;outline-offset:2px}
+</style>
 </head>
 <body>
-<div style="background:#111;color:#fff;font-size:12px;padding:7px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-family:'IBM Plex Sans',system-ui,sans-serif">
-  <span style="background:#0A7D46;padding:2px 8px;border-radius:99px;font-weight:600">V2</span>
-  <b style="font-weight:600">Redesign</b>
-  <span>Searchable named catalogue.</span>
-  <a href="../" style="color:#7fe3bd;text-decoration:none">All versions</a>
-  <a href="../v1/" style="color:#7fe3bd;text-decoration:none">&larr; Go to V1</a>
-</div>
-
+<nav class="vswitch" aria-label="Design version">
+<a class="v" href="/Share-Page-GroMo/" title="Version 1 - original design" aria-label="Version 1, original design">1</a>
+<a class="v on" href="/Share-Page-GroMo/v2/" title="Version 2 - searchable catalogue" aria-label="Version 2, searchable catalogue">2</a>
+</nav>
 <div class="topbar">
   <div class="wrap">
     <span class="mark">
@@ -689,3 +692,4 @@ document.getElementById("copy").textContent = "© " + new Date().getFullYear() +
 
 </body>
 </html>
+
