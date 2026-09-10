@@ -13,10 +13,8 @@ body{margin:0;background:#fff;color:#212529;font-family:Figtree,sans-serif;font-
 img{max-width:100%}
 a{color:inherit}
 
-header{background:#fff;padding:12px 16px;display:flex;align-items:center;border-bottom:1px solid #eee}
-header img{height:28px;width:auto}
-.hdr-right{margin-left:auto;display:flex;gap:14px}
-.hdr-right span{width:22px;height:14px;border-left:1px solid #e2e2e2}
+header{background:#fff;padding:10px 16px 12px;border-bottom:1px solid #eee;position:relative}
+header img{width:120px;height:43px;object-fit:contain;display:block}
 
 .hero{
   background-image:url("https://sales.gromo.in/static/media/gp-img-bcg-mobile.6d34e11c.png");
@@ -93,6 +91,24 @@ footer a:hover{text-decoration:underline}
   .hero-cert img{width:100%;margin:0;border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
   .hero-cert a{display:none}
 }
+.hdr-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.lang{display:flex;align-items:center;gap:6px;height:34px;padding:0 10px 0 8px;border:1px solid #d9dee5;border-radius:17px;background:#fff;color:#333;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.lang svg{width:17px;height:17px;flex:none;color:#2E8BFF}
+.lang .chev{width:11px;height:11px;color:#777}
+.lang-menu{position:absolute;right:16px;top:52px;z-index:40;margin:0;padding:6px 0;list-style:none;background:#fff;border:1px solid #e3e6ea;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.14);min-width:150px}
+.lang-menu li{padding:9px 14px;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+.lang-menu li:hover{background:#f3f6fa}
+.lang-menu li[aria-selected="true"]{color:#2E8BFF;font-weight:600}
+.search{display:flex;align-items:center;gap:10px;margin-top:10px;height:44px;border:1.5px solid #2E8BFF;border-radius:10px;padding:0 14px;background:#fff}
+.search svg{width:20px;height:20px;flex:none;color:#8a8f96}
+.search input{flex:1 1 auto;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:#333}
+.search input::placeholder{color:#8a8f96}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none}
+.search .clear{display:none;border:0;background:none;color:#8a8f96;font-size:18px;line-height:1;cursor:pointer;padding:4px}
+.search.has .clear{display:block}
+.noresults{display:none;padding:18px 16px 4px;color:#666;font-size:14px;text-align:center}
+.cat[hidden],.tile[hidden]{display:none}
+@media(min-width:900px){header{padding:14px 24px}.search{max-width:640px}}
 </style>
 <style>
 :root{--vsw:47px}
@@ -128,22 +144,37 @@ if(new URLSearchParams(location.search).get('embed')==='1'){
 }
 </script>
 <header>
+  <div class="hdr-row">
   <img alt="GroMo Partner" src="data:image/png;base64,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">
-  <div class="hdr-right"><span></span><span></span></div>
+    <button class="lang" id="langBtn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span id="langLbl">EN</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <ul class="lang-menu" id="langMenu" role="listbox" hidden>
+    <li role="option" data-lang="en" aria-selected="true">English <span>EN</span></li>
+    <li role="option" data-lang="hi">हिन्दी <span>HI</span></li>
+  </ul>
+  <label class="search" id="searchBox">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="q" type="search" placeholder="Search for Products, Brands and More" autocomplete="off" aria-label="Search for products, brands and more" data-i18n-ph="searchPh">
+    <button class="clear" id="qClear" type="button" aria-label="Clear search">&times;</button>
+  </label>
 </header>
 
 <section class="hero">
   <div class="hero-in">
     <div class="hero-txt">
       <p class="hero-name">RISHAV RAJ VERMA</p>
-      <p class="hero-desc">I am a certified financial advisor and have helped many people like you to get credit cards, loans, savings accounts and other financial products</p>
+      <p class="hero-desc" data-i18n="heroDesc">I am a certified financial advisor and have helped many people like you to get credit cards, loans, savings accounts and other financial products</p>
     </div>
     <div class="hero-cert">
       <picture>
         <source media="(min-width:900px)" srcset="https://sales.gromo.in/static/media/dummy_cert.978fa295.png">
         <img alt="Financial Advisor Certificate" src="https://sales.gromo.in/static/media/viewCertificateImg.8608bfb0.png">
       </picture>
-      <a href="#">View my Financial Advisor Certificate</a>
+      <a href="#" data-i18n="viewCert">View my Financial Advisor Certificate</a>
     </div>
   </div>
 </section>
@@ -153,25 +184,26 @@ if(new URLSearchParams(location.search).get('embed')==='1'){
   <a href="#"><img alt="Check your vehicle challan for FREE" src="https://sales.gromo.in/static/media/challanBannerMobile.e3d15e7a.png"></a>
 </div>
 
-<h2 class="apply">Apply For Financial Products</h2>
+<h2 class="apply" data-i18n="apply">Apply For Financial Products</h2>
+<div class="noresults" id="noResults" data-i18n="noResults">No products match your search</div>
 <div class="cats" id="cats"></div>
 
 <section class="ins">
   <div class="ins-in">
-    <h3>Need Free Insurance Advice?</h3>
-    <h2>Get in touch</h2>
+    <h3 data-i18n="insH3">Need Free Insurance Advice?</h3>
+    <h2 data-i18n="insH2">Get in touch</h2>
     <form onsubmit="return false">
-      <input type="text" placeholder="Name" autocomplete="name">
-      <input type="tel" placeholder="Phone" autocomplete="tel">
-      <input type="email" placeholder="Email" autocomplete="email">
+      <input type="text" placeholder="Name" data-i18n-ph="name" autocomplete="name">
+      <input type="tel" placeholder="Phone" data-i18n-ph="phone" autocomplete="tel">
+      <input type="email" placeholder="Email" data-i18n-ph="email" autocomplete="email">
       <select aria-label="Select Product">
-      <option>Select Product</option>
-      <option>Health Insurance</option>
-      <option>Car Insurance</option>
-      <option>Life Insurance</option>
-        <option>Commercial Vehicle Insurance</option>
+      <option data-i18n="selectProduct">Select Product</option>
+      <option data-i18n="health">Health Insurance</option>
+      <option data-i18n="car">Car Insurance</option>
+      <option data-i18n="life">Life Insurance</option>
+        <option data-i18n="cv">Commercial Vehicle Insurance</option>
       </select>
-      <button type="submit">SUBMIT</button>
+      <button type="submit" data-i18n="submit">SUBMIT</button>
     </form>
   </div>
 </section>
@@ -179,16 +211,16 @@ if(new URLSearchParams(location.search).get('embed')==='1'){
 <section class="why">
   <img class="why-img" alt="" src="https://sales.gromo.in/static/media/trusted_logo.eb6598ec.svg">
   <div>
-  <h2>Why Choose a GroMo Certified Partner?</h2>
-  <p>Work with experts who understand your needs and value your time. Get the best financial product, stay updated about the status of your product, and get it delivered to you in the shortest possible period.</p>
-  <p>GroMo is founded by IIT-Delhi alumni and is dedicated to creating the best financial product buying experience for you.</p>
+  <h2 data-i18n="whyH2">Why Choose a GroMo Certified Partner?</h2>
+  <p data-i18n="why1">Work with experts who understand your needs and value your time. Get the best financial product, stay updated about the status of your product, and get it delivered to you in the shortest possible period.</p>
+  <p data-i18n="why2">GroMo is founded by IIT-Delhi alumni and is dedicated to creating the best financial product buying experience for you.</p>
 
 </section>
 
 <footer>
   <p>&copy; Copyright 2021. GroMo</p>
-  <a href="#">Term of service</a>
-  <a href="#">Privacy Policy</a>
+  <a href="#" data-i18n="tos">Term of service</a>
+  <a href="#" data-i18n="privacy">Privacy Policy</a>
 </footer>
 
 <div class="float">
@@ -209,7 +241,7 @@ const CATS=[
 const host=document.getElementById('cats');
 CATS.forEach(([label,items])=>{
   const w=document.createElement('div'); w.className='cat';
-  const l=document.createElement('div'); l.className='cat-lbl'; l.textContent=label; w.appendChild(l);
+  const l=document.createElement('div'); l.className='cat-lbl'; l.textContent=label; l.dataset.cat=label; w.appendChild(l);
   const r=document.createElement('div'); r.className='rail';
   items.forEach(([code,file])=>{
     const t=document.createElement('div'); t.className='tile';
@@ -219,8 +251,60 @@ CATS.forEach(([label,items])=>{
   w.appendChild(r); host.appendChild(w);
 });
 </script>
+<script>
+// ---- brand names so search matches what people type, not just the product codes ----
+const NAMES={AXIS_CC:"Axis Bank",ROAR_CARD:"Roar Card Unity",INDUSIND_CC:"IndusInd Bank",AXIS_CK:"Axis Bank",UNI_BOB:"Uni Bank of Baroda",AUSFB_CC:"AU Small Finance Bank",SCAPE:"Scapia",SBI_CASHBACK:"SBI Cashback Card",SBI_CLIC:"SBI SimplyCLICK",HDFC_PIXEL:"HDFC Pixel",KOTAK_CARD:"Kotak PVR INOX",IDFC_CC:"IDFC FIRST Bank",POP_CC:"POP Club",IDFC_HPCL:"IDFC FIRST HPCL Power",KIWI_CC:"Kiwi",TATA_NEU:"Tata Neu HDFC",SBI_CC:"SBI Card",SALARY_SE:"SalarySe",HDFC_P:"HDFC Bank",TATA_HDFC:"Tata Neu Infinity HDFC",RBL_IO:"RBL IndianOil",EDGE_CSB:"Jupiter Edge CSB",MYZONE_AXIS:"Axis MyZone",LIC_AXIS:"LIC Axis Bank",ZAGG_CC:"Zaggle",RBL_CC:"RBL Bank",IND_TIGR:"IndusInd Tiger",AXIS_IO:"Axis IndianOil",KIWI:"Kiwi UPI",YES_CC:"YES Bank",KOTAK_SA:"Kotak 811",KSAVINGS:"Kotak 811",EQUITAS:"Equitas Small Finance Bank",IDFC_SAVINGS:"IDFC FIRST Bank",CHOICE_CONNECT:"Choice",STOCKO:"Stocko InCred Money",FIVE_PAISA:"5paisa",UPSTOX:"Upstox",LEMONN_DA:"Lemonn",POONAWALLA_FINCORP:"Poonawalla Fincorp",INCRED:"InCred Finance",MONEYVIEW:"Moneyview",FPPL:"Fibe",ZYPE:"Zype",TEZ:"Tez",RAM_PL:"Ram Fincorp",PREFR:"Prefr",BRIGHT:"Bright Money",HERO_PL:"Hero FinCorp",MYFLOT:"MyFlot",LPL:"LoanTap",PAISA_PL:"Paisabazaar",UNITY_PL:"Unity Small Finance Bank",KREDITBEE:"KreditBee",ZAP_PL:"Zapcash",KISSHT:"Kissht",RING:"Ring",RUPEZI:"Rupeezi",ASAP_FPL:"ASAP",PAYME_PL:"PayMe India",HDFC_IL:"HDFC Bank Insta Loan",DIGI_CREDIT:"DigiCredit",BHARATPL:"BharatPe Money",IDFC_PL:"IDFC FIRST Bank",MMBPL:"MoneyMart",ClickPE:"ClickPe Muthoot",POONAWALLA_BL:"Poonawalla Fincorp Business Loan",BHA_FD:"Bharat Fixed Deposit",BHA_DG:"Bharat Digital Gold",JIRAAF:"Jiraaf",ICICI_PRU:"ICICI Prudential",SBM_IC:"SBM Bank Novio",BHA_MF:"Bharat Mutual Fund",AXIS_MICRO:"Axis Micro SIP",AXIS_MUTUAL:"Axis Mutual Fund",AW_MUTUAL:"Appreciate Wealth",VOLT_MONEY:"Volt Money",FATAKPAY:"FatakPay",HDFC_SE:"HDFC SmartEMI",PAAPA:"Paapa",BPCL_UPI:"BharatPe BPCL UPI",APO_CASH:"Apollo Cash"};
+
+// ---- language ----
+const I18N={
+ en:{searchPh:"Search for Products, Brands and More",heroDesc:"I am a certified financial advisor and have helped many people like you to get credit cards, loans, savings accounts and other financial products",viewCert:"View my Financial Advisor Certificate",apply:"Apply For Financial Products",noResults:"No products match your search",insH3:"Need Free Insurance Advice?",insH2:"Get in touch",name:"Name",phone:"Phone",email:"Email",selectProduct:"Select Product",health:"Health Insurance",car:"Car Insurance",life:"Life Insurance",cv:"Commercial Vehicle Insurance",submit:"SUBMIT",whyH2:"Why Choose a GroMo Certified Partner?",why1:"Work with experts who understand your needs and value your time. Get the best financial product, stay updated about the status of your product, and get it delivered to you in the shortest possible period.",why2:"GroMo is founded by IIT-Delhi alumni and is dedicated to creating the best financial product buying experience for you.",tos:"Term of service",privacy:"Privacy Policy",cats:{"Credit Card":"Credit Card","Saving Account":"Saving Account","Demat Account":"Demat Account","Personal Loan":"Personal Loan","Investment":"Investment","Credit Line":"Credit Line"}},
+ hi:{searchPh:"उत्पाद, ब्रांड और अधिक खोजें",heroDesc:"मैं एक प्रमाणित वित्तीय सलाहकार हूँ और आपके जैसे कई लोगों को क्रेडिट कार्ड, लोन, बचत खाते और अन्य वित्तीय उत्पाद दिलाने में मदद की है",viewCert:"मेरा वित्तीय सलाहकार प्रमाणपत्र देखें",apply:"वित्तीय उत्पादों के लिए आवेदन करें",noResults:"आपकी खोज से कोई उत्पाद मेल नहीं खाता",insH3:"मुफ़्त बीमा सलाह चाहिए?",insH2:"संपर्क करें",name:"नाम",phone:"फ़ोन",email:"ईमेल",selectProduct:"उत्पाद चुनें",health:"स्वास्थ्य बीमा",car:"कार बीमा",life:"जीवन बीमा",cv:"व्यावसायिक वाहन बीमा",submit:"सबमिट करें",whyH2:"GroMo प्रमाणित पार्टनर को क्यों चुनें?",why1:"ऐसे विशेषज्ञों के साथ काम करें जो आपकी ज़रूरतों को समझते हैं और आपके समय की कद्र करते हैं। सबसे अच्छा वित्तीय उत्पाद पाएँ, अपने उत्पाद की स्थिति की जानकारी पाते रहें, और उसे कम से कम समय में अपने पास पहुँचाएँ।",why2:"GroMo की स्थापना IIT-दिल्ली के पूर्व छात्रों ने की है और यह आपके लिए वित्तीय उत्पाद खरीदने का सबसे अच्छा अनुभव बनाने के लिए समर्पित है।",tos:"सेवा की शर्तें",privacy:"गोपनीयता नीति",cats:{"Credit Card":"क्रेडिट कार्ड","Saving Account":"बचत खाता","Demat Account":"डीमैट खाता","Personal Loan":"पर्सनल लोन","Investment":"निवेश","Credit Line":"क्रेडिट लाइन"}}
+};
+let lang="en";
+try{ lang = localStorage.getItem("gp_lang")==="hi" ? "hi" : "en"; }catch(e){}
+function applyLang(){
+  const t=I18N[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{ const k=el.dataset.i18n; if(t[k]!=null) el.textContent=t[k]; });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>{ const k=el.dataset.i18nPh; if(t[k]!=null) el.placeholder=t[k]; });
+  document.querySelectorAll(".cat-lbl").forEach(el=>{ el.textContent = t.cats[el.dataset.cat] || el.dataset.cat; });
+  document.getElementById("langLbl").textContent = lang.toUpperCase();
+  document.querySelectorAll("#langMenu li").forEach(li=>li.setAttribute("aria-selected", li.dataset.lang===lang ? "true":"false"));
+}
+const langBtn=document.getElementById("langBtn"), langMenu=document.getElementById("langMenu");
+langBtn.addEventListener("click",e=>{ e.stopPropagation(); const open=langMenu.hidden; langMenu.hidden=!open; langBtn.setAttribute("aria-expanded", open?"true":"false"); });
+langMenu.addEventListener("click",e=>{ const li=e.target.closest("li"); if(!li) return; lang=li.dataset.lang; try{localStorage.setItem("gp_lang",lang);}catch(x){} applyLang(); langMenu.hidden=true; langBtn.setAttribute("aria-expanded","false"); });
+document.addEventListener("click",()=>{ langMenu.hidden=true; langBtn.setAttribute("aria-expanded","false"); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ langMenu.hidden=true; langBtn.setAttribute("aria-expanded","false"); } });
+
+// ---- search ----
+const qEl=document.getElementById("q"), box=document.getElementById("searchBox"), noRes=document.getElementById("noResults");
+function runSearch(){
+  const q=qEl.value.trim().toLowerCase();
+  box.classList.toggle("has", q.length>0);
+  let any=false;
+  document.querySelectorAll(".cat").forEach(cat=>{
+    const catName=cat.querySelector(".cat-lbl").dataset.cat.toLowerCase();
+    const catNameHi=(I18N.hi.cats[cat.querySelector(".cat-lbl").dataset.cat]||"").toLowerCase();
+    let shown=0;
+    cat.querySelectorAll(".tile").forEach(tile=>{
+      const code=tile.querySelector("img").alt;
+      const hay=(code.replace(/_/g," ")+" "+(NAMES[code]||"")+" "+catName+" "+catNameHi).toLowerCase();
+      const ok=!q || hay.includes(q);
+      tile.hidden=!ok; if(ok) shown++;
+    });
+    cat.hidden = shown===0; if(shown) any=true;
+  });
+  noRes.style.display = any ? "none" : "block";
+}
+qEl.addEventListener("input", runSearch);
+document.getElementById("qClear").addEventListener("click",()=>{ qEl.value=""; runSearch(); qEl.focus(); });
+
+applyLang();
+</script>
 </body>
 </html>
+
 
 
 
