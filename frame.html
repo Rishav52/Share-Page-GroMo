@@ -31,7 +31,7 @@ body{margin:0;background:#0d100e;font-family:system-ui,-apple-system,sans-serif;
   box-shadow:0 18px 50px -14px rgba(0,0,0,.75);
   overflow:hidden;flex:none;position:relative;
 }
-.phone{display:flex;flex-direction:column;height:calc(1093px + 130px)}
+.phone{box-sizing:content-box;display:flex;flex-direction:column;height:calc(1093px + 130px)}
 .phone iframe{width:100%;flex:1 1 auto;min-height:0;border:0;display:block;background:#fff}
 .sbar{flex:none;height:42px;background:#000;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px 0 26px;font-size:16px;font-weight:600;letter-spacing:.01em}
 .sbar .ico{display:flex;align-items:center;gap:7px}
@@ -114,6 +114,7 @@ document.title = "V" + cur.n + " " + cur.label + " - mobile preview";
 </script>
 </body>
 </html>
+
 
 
 
