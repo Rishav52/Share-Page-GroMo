@@ -23,12 +23,13 @@ header img{height:28px;width:auto}
   background-size:cover;background-position:center;background-color:#3F6AD8;
   padding:24px 16px 28px;color:#fff;
 }
-.hero-in{display:flex;gap:18px;align-items:center;max-width:1100px;margin:0 auto}
-.hero-txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px}
-.hero-name{font-size:22px;line-height:28px;margin:0;font-weight:500;text-transform:uppercase;letter-spacing:.01em}
-.hero-desc{font-size:14px;line-height:21px;margin:0;max-width:34em}
-.hero-cert{flex:0 0 124px;display:flex;align-items:center}
-.hero-cert img{width:124px;height:auto;display:block;border-radius:3px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.hero-in{display:flex;gap:16px;align-items:flex-start;max-width:1100px;margin:0 auto}
+.hero-txt{flex:1 1 auto;min-width:0}
+.hero-name{font-size:20px;line-height:24px;margin:0 0 6px;font-weight:400;text-transform:uppercase}
+.hero-desc{font-size:14px;line-height:20px;margin:0}
+.hero-cert{flex:0 0 124px;text-align:center}
+.hero-cert img{width:124px;height:auto;display:block;margin:0 auto}
+.hero-cert a{display:inline-block;margin-top:8px;font-size:16px;line-height:22px;color:#fff;text-decoration:underline}
 
 .banners{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 16px;max-width:1100px;margin:0 auto}
 .banners a{display:block;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12)}
@@ -84,12 +85,13 @@ footer a:hover{text-decoration:underline}
   .why{display:grid;grid-template-columns:300px 1fr;gap:36px;align-items:center;text-align:left;padding:40px 24px}
   .why-img{margin:0}
   .hero{padding:56px 24px 60px}
-  .hero-in{gap:56px}
-  .hero-txt{gap:14px}
-  .hero-name{font-size:36px;line-height:44px}
-  .hero-desc{font-size:20px;line-height:32px}
-  .hero-cert{flex:0 0 46%;max-width:560px}
-  .hero-cert img{width:100%;border-radius:4px}
+  .hero-in{gap:56px;align-items:center}
+  .hero-txt{display:flex;flex-direction:column;justify-content:center;gap:14px}
+  .hero-name{font-size:36px;line-height:44px;margin:0;font-weight:500;letter-spacing:.01em}
+  .hero-desc{font-size:20px;line-height:32px;max-width:34em}
+  .hero-cert{flex:0 0 46%;max-width:560px;text-align:left}
+  .hero-cert img{width:100%;margin:0;border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+  .hero-cert a{display:none}
 }
 </style>
 <style>
@@ -141,6 +143,7 @@ if(new URLSearchParams(location.search).get('embed')==='1'){
         <source media="(min-width:900px)" srcset="https://sales.gromo.in/static/media/dummy_cert.978fa295.png">
         <img alt="Financial Advisor Certificate" src="https://sales.gromo.in/static/media/viewCertificateImg.8608bfb0.png">
       </picture>
+      <a href="#">View my Financial Advisor Certificate</a>
     </div>
   </div>
 </section>
@@ -218,6 +221,7 @@ CATS.forEach(([label,items])=>{
 </script>
 </body>
 </html>
+
 
 
 
