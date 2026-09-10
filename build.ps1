@@ -1,4 +1,4 @@
-# Builds the published pages from src/.
+﻿# Builds the published pages from src/.
 # Each src/vN.html is a plain standalone page with no switcher.
 # This injects the version + device switcher and writes the output files.
 #
@@ -9,7 +9,8 @@ $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 # --- version registry: add one line per new version -------------------------
 $VERSIONS = @(
   @{ n = '1'; label = 'Original';  src = 'v1.html'; out = 'index.html';    path = ''    },
-  @{ n = '2'; label = 'Catalogue'; src = 'v2.html'; out = 'v2\index.html'; path = 'v2/' }
+  @{ n = '2'; label = 'Catalogue'; src = 'v2.html'; out = 'v2\index.html'; path = 'v2/' },
+  @{ n = '3'; label = 'Clean hero'; src = 'v3.html'; out = 'v3\index.html'; path = 'v3/' }
 )
 $BASE = '/Share-Page-GroMo/'
 # ---------------------------------------------------------------------------
@@ -78,3 +79,4 @@ foreach ($v in $VERSIONS) {
 }
 
 Write-Output "done. frame.html serves mobile mode and reads ?v= from the query."
+
