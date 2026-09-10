@@ -31,7 +31,22 @@ body{margin:0;background:#0d100e;font-family:system-ui,-apple-system,sans-serif;
   box-shadow:0 18px 50px -14px rgba(0,0,0,.75);
   overflow:hidden;flex:none;position:relative;
 }
-.phone iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+.phone{display:flex;flex-direction:column;height:calc(873px + 130px)}
+.phone iframe{width:100%;flex:1 1 auto;min-height:0;border:0;display:block;background:#fff}
+.sbar{flex:none;height:42px;background:#000;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px 0 26px;font-size:16px;font-weight:600;letter-spacing:.01em}
+.sbar .ico{display:flex;align-items:center;gap:7px}
+.sbar svg{height:15px;width:auto;display:block}
+.sbar .bat{display:flex;align-items:center;gap:3px;font-size:11px;font-weight:700;background:#d9d9d9;color:#111;border-radius:6px;padding:1px 6px;line-height:14px}
+.cbar{flex:none;height:64px;background:#1b1b1b;display:flex;align-items:center;gap:14px;padding:0 16px}
+.cbar .home{width:26px;height:26px;color:#f1f1f1;flex:none}
+.cbar .pill{flex:1 1 auto;min-width:0;height:44px;background:#303134;border-radius:22px;display:flex;align-items:center;gap:10px;padding:0 14px;color:#e8eaed;font-size:17px}
+.cbar .pill .tune{width:18px;height:18px;flex:none;color:#bdc1c6}
+.cbar .pill span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cbar .plus{width:26px;height:26px;color:#f1f1f1;flex:none}
+.cbar .tabs{width:28px;height:28px;border:2.5px solid #f1f1f1;border-radius:6px;color:#f1f1f1;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;line-height:1}
+.cbar .more{width:22px;height:22px;color:#f1f1f1;flex:none}
+.gbar{flex:none;height:24px;background:#fff;display:flex;align-items:center;justify-content:center}
+.gbar i{display:block;width:120px;height:4px;border-radius:2px;background:#c4c4c4}
 .meta{color:#78857c;font-size:11.5px;font-family:ui-monospace,"Cascadia Mono",monospace;letter-spacing:.04em}
 </style>
 </head>
@@ -40,7 +55,28 @@ body{margin:0;background:#0d100e;font-family:system-ui,-apple-system,sans-serif;
 <nav class="vswitch" id="sw" aria-label="Design version and device"></nav>
 
 <div class="stage">
-  <div class="phone"><iframe id="fr" title="Mobile preview"></iframe></div>
+<div class="phone">
+    <div class="sbar" aria-hidden="true">
+      <span id="clock">18:56</span>
+      <span class="ico">
+        <svg viewBox="0 0 22 16" fill="#fff"><path d="M11 13.2 8.2 10.4a4 4 0 0 1 5.6 0L11 13.2Zm0-6.4a7 7 0 0 0-5 2.1L4.2 7.1A9.6 9.6 0 0 1 11 4.3c2.6 0 5 1 6.8 2.8L16 8.9A7 7 0 0 0 11 6.8ZM11 2a12 12 0 0 0-8.5 3.5L.7 3.7A14.6 14.6 0 0 1 11 0c4 0 7.6 1.4 10.3 3.7l-1.8 1.8A12 12 0 0 0 11 2Z"/></svg>
+        <svg viewBox="0 0 18 16" fill="#fff"><rect x="0" y="10" width="3" height="6" rx=".6"/><rect x="5" y="7" width="3" height="9" rx=".6"/><rect x="10" y="4" width="3" height="12" rx=".6"/><rect x="15" y="0" width="3" height="16" rx=".6"/></svg>
+        <span class="bat">54</span>
+      </span>
+    </div>
+    <div class="cbar" aria-hidden="true">
+      <svg class="home" viewBox="0 0 24 24" fill="none"><path d="M3.5 11 12 3.5l8.5 7.5V20a1 1 0 0 1-1 1h-5v-6h-5v6h-5a1 1 0 0 1-1-1v-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      <div class="pill">
+        <svg class="tune" viewBox="0 0 24 24" fill="none"><path d="M3 7h9M16 7h5M3 17h5M12 17h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="7" r="2.2" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="17" r="2.2" stroke="currentColor" stroke-width="2"/></svg>
+        <span id="addr">rishav52.github.io</span>
+      </div>
+      <svg class="plus" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <div class="tabs">17</div>
+      <svg class="more" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="19" r="2.2"/></svg>
+    </div>
+    <iframe id="fr" title="Mobile preview"></iframe>
+    <div class="gbar" aria-hidden="true"><i></i></div>
+  </div>
   <div class="meta" id="meta"></div>
 </div>
 
@@ -71,11 +107,14 @@ html += '<a class="on" href="' + BASE + "frame.html?v=" + cur.n + '" title="Mobi
 document.getElementById("sw").innerHTML = html;
 
 document.getElementById("fr").src = BASE + cur.path + "?embed=1";
+document.getElementById("addr").textContent = "rishav52.github.io" + BASE + cur.path;
+(function tick(){ var t=new Date(); document.getElementById("clock").textContent = String(t.getHours()).padStart(2,"0")+":"+String(t.getMinutes()).padStart(2,"0"); setTimeout(tick, 15000); })();
 document.getElementById("meta").textContent = "V" + cur.n + " · " + cur.label + " · 393 × 873";
 document.title = "V" + cur.n + " " + cur.label + " - mobile preview";
 </script>
 </body>
 </html>
+
 
 
 
