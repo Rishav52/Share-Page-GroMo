@@ -54,6 +54,7 @@ body{margin:0;background:#0d100e;font-family:system-ui,-apple-system,sans-serif;
 
 <nav class="vswitch" id="sw" aria-label="Design version and device"></nav>
 
+<button class="fsexit" id="fsexit" type="button" title="Exit full screen" aria-label="Exit full screen">&#x2715;</button>
 <div class="stage">
 <div class="phone">
     <div class="sbar" aria-hidden="true">
@@ -104,7 +105,34 @@ html += '<a href="' + BASE + cur.path + '" title="Desktop view">' +
         '<span class="sq">' + MON + '</span><span class="lb">Desktop</span></a>';
 html += '<a class="on" href="' + BASE + "frame.html?v=" + cur.n + '" title="Mobile view">' +
         '<span class="sq">' + PHN + '</span><span class="lb">Mobile</span></a>';
+html += '<button class="fsbtn" id="fsbtn" type="button" title="Open full-screen phone view"><span class="sq">' + PHN + '</span><span class="lb">Full screen</span></button>';
 document.getElementById("sw").innerHTML = html;
+
+var PHONE_W = 393, PHONE_H = 1093 + 130;
+function fitPhone(){
+  var ph = document.querySelector(".phone");
+  if(!document.body.classList.contains("fs")){ ph.style.transform = ""; return; }
+  var s = Math.min(window.innerWidth / PHONE_W, window.innerHeight / PHONE_H);
+  ph.style.transform = "scale(" + s + ")";
+}
+function enterFs(){
+  document.body.classList.add("fs");
+  fitPhone();
+  var el = document.documentElement;
+  var req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if(req && !document.fullscreenElement){ try { req.call(el); } catch(e){} }
+}
+function exitFs(){
+  document.body.classList.remove("fs");
+  fitPhone();
+  if(document.fullscreenElement && document.exitFullscreen){ document.exitFullscreen(); }
+}
+document.getElementById("fsbtn").addEventListener("click", enterFs);
+document.getElementById("fsexit").addEventListener("click", exitFs);
+document.addEventListener("fullscreenchange", function(){ if(!document.fullscreenElement) exitFs(); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") exitFs(); });
+window.addEventListener("resize", fitPhone);
+if(new URLSearchParams(location.search).get("fs") === "1"){ document.body.classList.add("fs"); fitPhone(); }
 
 document.getElementById("fr").src = BASE + cur.path + "?embed=1";
 document.getElementById("addr").textContent = "rishav52.github.io" + BASE + cur.path;
@@ -114,6 +142,7 @@ document.title = "V" + cur.n + " " + cur.label + " - mobile preview";
 </script>
 </body>
 </html>
+
 
 
 
